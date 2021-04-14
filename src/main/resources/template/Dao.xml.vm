@@ -10,5 +10,66 @@
 #end
     </resultMap>
 
+    <sql id="Base_Column_List">
+        #foreach($column in $columns)
+        ${column.columnName},
+        #end
+    </sql>
 
+    <select id="getAllData" parameterType="${package}.${moduleName}.entity.${className}Entity" resultMap="${classname}Map">
+        SELECT <include refid="Base_Column_List"/> FROM ${tableName}
+        <where>
+            #foreach($column in $columns)
+            <if test="${column.attrname} != null">
+                AND ${column.columnName} = #{${column.attrname}}
+            </if>
+            #end
+        </where>
+        order by id desc
+    </select>
+
+    <select id="getDataById" parameterType="java.lang.Integer" resultMap="${classname}Map">
+        SELECT <include refid="Base_Column_List"/> FROM ${tableName}
+        where id = #{id}
+    </select>
+
+    <insert id="saveData" parameterType="${package}.${moduleName}.entity.${className}Entity"
+        useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+        INSERT INTO ${tableName}
+        (
+        #foreach($column in $columns)
+        <if test="${column.attrname} != null">
+            ${column.columnName},
+        </if>
+        #end
+        create_time
+        ) VALUES (
+        #foreach($column in $columns)
+        <if test="${column.attrname} != null">
+            #{${column.attrname}},
+        </if>
+        #end
+        NOW()
+        )
+    </insert>
+
+    <update id="updateData" parameterType="${package}.${moduleName}.entity.${className}Entity">
+        UPDATE ${tableName}
+        <set>
+            #foreach($column in $columns)
+            <if test="${column.attrname} != null">
+                ${column.columnName} = #{${column.attrname}},
+            </if>
+            #end
+            update_time = now(),
+        </set>
+    </update>
+
+    <update id="deleteDataById" parameterType="java.lang.Integer">
+        UPDATE ${tableName}
+        SET
+            del_flag = 1,
+            update_time = NOW()
+        WHERE id = #{id}
+    </update>
 </mapper>
