@@ -36,21 +36,21 @@ public class ${className}ServiceImpl implements ${className}Service {
     @Transactional(rollbackFor = IllegalArgumentException.class)
     public void saveData(${className}Entity param) {
         int i = ${classname}Dao.saveData(param);
-        Assert.isTrue(i==i, "新增${comments}失败");
+        Assert.isTrue(i==1, "新增${comments}失败");
     }
 
     @Override
     @Transactional(rollbackFor = IllegalArgumentException.class)
     public void updateData(${className}Entity param) {
         int i = ${classname}Dao.updateData(param);
-        Assert.isTrue(i==i, "修改${comments}失败");
+        Assert.isTrue(i==1, "修改${comments}失败");
     }
 
     @Override
     @Transactional(rollbackFor = IllegalArgumentException.class)
     public void deleteDataById(Integer id) {
         int i = ${classname}Dao.deleteDataById(id);
-        Assert.isTrue(i==i, "删除${comments}失败");
+        Assert.isTrue(i==1, "删除${comments}失败");
     }
 
 }

@@ -63,6 +63,7 @@
             #end
             update_time = now(),
         </set>
+        WHERE id = #{id}
     </update>
 
     <update id="deleteDataById" parameterType="java.lang.Integer">
