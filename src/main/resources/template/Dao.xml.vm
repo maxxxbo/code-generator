@@ -38,18 +38,24 @@
         INSERT INTO ${tableName}
         (
         #foreach($column in $columns)
-        <if test="${column.attrname} != null">
-            ${column.columnName},
-        </if>
+            #if (${column.attrname} == "createTime")
+                create_time,
+            #else
+                <if test="${column.attrname} != null">
+                    ${column.columnName},
+                </if>
+            #end
         #end
-        create_time
         ) VALUES (
         #foreach($column in $columns)
-        <if test="${column.attrname} != null">
-            #{${column.attrname}},
-        </if>
+            #if (${column.attrname} == "createTime")
+                NOW(),
+            #else
+                <if test="${column.attrname} != null">
+                    #{${column.attrname}},
+                </if>
+            #end
         #end
-        NOW()
         )
     </insert>
 
@@ -57,11 +63,14 @@
         UPDATE ${tableName}
         <set>
             #foreach($column in $columns)
-            <if test="${column.attrname} != null">
-                ${column.columnName} = #{${column.attrname}},
-            </if>
+                #if (${column.attrname} == 'updateTime')
+                    update_time = NOW(),
+                #else
+                    <if test="${column.attrname} != null">
+                    ${column.columnName} = #{${column.attrname}},
+                    </if>
+                #end
             #end
-            update_time = now(),
         </set>
         WHERE id = #{id}
     </update>
