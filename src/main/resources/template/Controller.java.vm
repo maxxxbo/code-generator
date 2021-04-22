@@ -60,7 +60,7 @@ public class ${className}Controller {
     public JsonResult save(@RequestBody ${className}Entity ${classname}){
 		${classname}Service.saveData(${classname});
 
-        return JsonResult.success();
+        return JsonResult.success(${classname}.getId());
     }
 
     /**

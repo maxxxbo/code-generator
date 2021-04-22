@@ -20,7 +20,11 @@
         SELECT <include refid="Base_Column_List"/> FROM ${tableName}
         <where>
             #foreach($column in $columns)
-            <if test="${column.attrname} != null">
+                #if ($column.attrType == 'String')
+                <if test="${column.attrname} != null and ${column.attrname} != ''">
+                #else
+                <if test="${column.attrname} != null">
+                #end
                 AND ${column.columnName} = #{${column.attrname}}
             </if>
             #end
@@ -41,7 +45,11 @@
             #if (${column.attrname} == "createTime")
                 create_time,
             #else
-                <if test="${column.attrname} != null">
+                #if ($column.attrType == 'String')
+                    <if test="${column.attrname} != null and ${column.attrname} != ''">
+                #else
+                    <if test="${column.attrname} != null">
+                #end
                     ${column.columnName},
                 </if>
             #end
@@ -51,7 +59,11 @@
             #if (${column.attrname} == "createTime")
                 NOW(),
             #else
-                <if test="${column.attrname} != null">
+                #if ($column.attrType == 'String')
+                    <if test="${column.attrname} != null and ${column.attrname} != ''">
+                #else
+                    <if test="${column.attrname} != null">
+                #end
                     #{${column.attrname}},
                 </if>
             #end
@@ -65,8 +77,13 @@
             #foreach($column in $columns)
                 #if (${column.attrname} == 'updateTime')
                     update_time = NOW(),
+                #elseif (${column.attrname} == 'id')
                 #else
+                    #if ($column.attrType == 'String')
+                        <if test="${column.attrname} != null and ${column.attrname} != ''">
+                    #else
                     <if test="${column.attrname} != null">
+                    #end
                     ${column.columnName} = #{${column.attrname}},
                     </if>
                 #end

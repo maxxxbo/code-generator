@@ -10,6 +10,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * ${comments}
@@ -26,11 +29,12 @@ import lombok.NoArgsConstructor;
 public class ${className}Entity implements Serializable {
 
 #foreach ($column in $columns)
-
-#*	#if($column.columnName == $pk.columnName)
-@TableId
-	#end*#
 	//$column.comments
+	#if ($column.attrType == 'Date')
+	@JsonIgnore
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm")
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
+	#end
 	@ApiModelProperty("$column.comments")
 	private $column.attrType $column.attrname;
 #end
